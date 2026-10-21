@@ -11,24 +11,23 @@ import Settings from './components/Settings';
 import NetworkCanvas from './components/NetworkCanvas';
 import GlobalTelemetry from './components/GlobalTelemetry';
 
-// مكون حماية المسارات (Protected Route)
-// يتحقق مما إذا كان المستخدم مسجلاً عبر الـ localStorage، وإلا يعيده لصفحة تسجيل الدخول
+// مكون حماية المسارات (Protected Route) المصحح
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const user = localStorage.getItem('netforge_user');
   if (!user) {
     return <Navigate to="/" replace />;
   }
-  return <children.type {...children.props} />;
+  return <>{children}</>;
 };
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/netforge-lab">
       <Routes>
         {/* صفحة تسجيل الدخول / الواجهة الرئيسية */}
         <Route path="/" element={<Hero />} />
         
-        {/* الصفحات الداخلية المحمية (لا يمكن الدخول إليها إلا بعد الـ Login) */}
+        {/* الصفحات الداخلية المحمية */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/lab" element={<ProtectedRoute><NetworkLab /></ProtectedRoute>} />
         <Route path="/challenges" element={<ProtectedRoute><Challenges /></ProtectedRoute>} />
